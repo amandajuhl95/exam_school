@@ -14,13 +14,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author aamandajuhl
  */
 @Entity
+@Table(name = "STUDENTS")
+@NamedQuery(name = "Student.deleteAllRows", query = "DELETE from Student")
 public class Student implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,15 +34,13 @@ public class Student implements Serializable {
     private Long id;
     private String name;
     private String email;
-    private User user;
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<SignedUp> signeduplist = new HashSet();
 
     public Student() {
     }
 
-    public Student(User user, String name, String email) {
-        this.user = user;
+    public Student(String name, String email) {
         this.name = name;
         this.email = email;
     }
@@ -70,21 +72,16 @@ public class Student implements Serializable {
     public Set<SignedUp> getSigneduplist() {
         return signeduplist;
     }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    
+     public void addSignedUp(SignedUp signedup) {
+        this.signeduplist.add(signedup);
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.name);
-        hash = 97 * hash + Objects.hashCode(this.email);
-        hash = 97 * hash + Objects.hashCode(this.user);
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.name);
+        hash = 29 * hash + Objects.hashCode(this.email);
         return hash;
     }
 
@@ -104,9 +101,6 @@ public class Student implements Serializable {
             return false;
         }
         if (!Objects.equals(this.email, other.email)) {
-            return false;
-        }
-        if (!Objects.equals(this.user, other.user)) {
             return false;
         }
         return true;

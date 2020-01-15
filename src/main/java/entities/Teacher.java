@@ -15,12 +15,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author aamandajuhl
  */
 @Entity
+@NamedQuery(name = "Teacher.deleteAllRows", query = "DELETE from Teacher")
 public class Teacher implements Serializable {
 
     private static final long serialVersionUID = 1L;

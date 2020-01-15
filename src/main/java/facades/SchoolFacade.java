@@ -8,6 +8,7 @@ package facades;
 import DTO.CourseDTO;
 import DTO.SchoolClassDTO;
 import entities.Course;
+import entities.SchoolClass;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -44,7 +45,7 @@ public class SchoolFacade {
         return emf.createEntityManager();
     }
 
-    public List<CourseDTO> getCourseAndClassList() {
+    public List<CourseDTO> getCourseList() {
         EntityManager em = getEntityManager();
 
         List<CourseDTO> coursesDTO = new ArrayList();
@@ -58,6 +59,22 @@ public class SchoolFacade {
 
         return coursesDTO;
 
+    }
+
+    public List<SchoolClassDTO> getClassListByTeacher(String teacher_name) {
+
+        EntityManager em = getEntityManager();
+
+        List<SchoolClassDTO> schoolclassesDTO = new ArrayList();
+        
+        TypedQuery<SchoolClass> query = em.createQuery("SELECT sc FROM SchoolClass sc INNER JOIN sc.teachers t WHERE t.name = :name", SchoolClass.class);
+        List<SchoolClass> schoolclasses = query.setParameter("name", teacher_name).getResultList();
+
+        for (SchoolClass schoolclass : schoolclasses) {
+            schoolclassesDTO.add(new SchoolClassDTO(schoolclass));
+        }
+
+        return schoolclassesDTO;
     }
 
 }

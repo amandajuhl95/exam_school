@@ -14,12 +14,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author aamandajuhl
  */
 @Entity
+@NamedQuery(name = "SignedUp.deleteAllRows", query = "DELETE from SignedUp")
 public class SignedUp implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -66,6 +68,10 @@ public class SignedUp implements Serializable {
 
     public SchoolClass getSchoolclass() {
         return schoolclass;
+    }
+
+    public void setSchoolclass(SchoolClass schoolclass) {
+        this.schoolclass = schoolclass;
     }
 
     @Override
