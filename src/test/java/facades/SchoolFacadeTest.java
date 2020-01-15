@@ -164,11 +164,10 @@ public class SchoolFacadeTest {
     @Test
     public void testGetClassListByTeacher() {
         System.out.println("getClassListByTeacher");
-        
+
         List<SchoolClassDTO> schoolclasses = facade.getClassListByTeacher(t2.getName());
         assertEquals(2, schoolclasses.size());
-        assertEquals("summer2019", schoolclasses.get(0).getSemester());
-        
+
     }
 
 }
