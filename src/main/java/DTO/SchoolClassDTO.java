@@ -22,8 +22,9 @@ public class SchoolClassDTO implements Serializable {
     private int maxNumberStudent;
     private String courseName;
     private Set<TeacherDTO> teachers = new HashSet();
-    
+
     public SchoolClassDTO(SchoolClass schoolclass) {
+        this.id = schoolclass.getId();
         this.semester = schoolclass.getSemester();
         this.maxNumberStudent = schoolclass.getMaxNumberStudent();
         this.courseName = schoolclass.getCourse().getCourseName();

@@ -23,7 +23,7 @@ public class CourseDTO implements Serializable {
     private Set<SchoolClassDTO> schoolclasses = new HashSet();
 
     public CourseDTO(Course course) {
-
+        this.id = course.getId();
         this.courseName = course.getCourseName();
         this.description = course.getDescription();
 

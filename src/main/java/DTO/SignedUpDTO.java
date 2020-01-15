@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class SignedUpDTO implements Serializable {
 
     private long id;
-    private int grade;
+    private String grade;
     private String passedDate;
     private String semester;
     private int maxNumberStudent;
@@ -29,7 +29,7 @@ public class SignedUpDTO implements Serializable {
         this.maxNumberStudent = signedup.getSchoolclass().getMaxNumberStudent();
     }
 
-    public SignedUpDTO(int grade, String passedDate, String semester) {
+    public SignedUpDTO(String grade, String passedDate, String semester) {
         this.grade = grade;
         this.passedDate = passedDate;
         this.semester = semester;
@@ -39,7 +39,7 @@ public class SignedUpDTO implements Serializable {
         return id;
     }
 
-    public int getGrade() {
+    public String getGrade() {
         return grade;
     }
 

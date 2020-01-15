@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package facades;
+package rest;
 
 import DTO.CourseDTO;
 import DTO.SchoolClassDTO;
@@ -13,25 +13,41 @@ import entities.SchoolClass;
 import entities.SignedUp;
 import entities.Student;
 import entities.Teacher;
+import io.restassured.RestAssured;
+import static io.restassured.RestAssured.given;
+import io.restassured.parsing.Parser;
+import java.net.URI;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.ws.rs.core.UriBuilder;
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.server.ResourceConfig;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+import static rest.QuoteResourceTest.startServer;
 import utils.EMF_Creator;
 
 /**
  *
  * @author aamandajuhl
  */
-public class SchoolFacadeTest {
+public class GenerelResourceTest {
 
+    private static final int SERVER_PORT = 7777;
+    private static final String SERVER_URL = "http://localhost/api";
+
+    static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
+    private static HttpServer httpServer;
     private static EntityManagerFactory emf;
-    private static SchoolFacade facade;
 
     private Course c1;
     private Course c2;
@@ -52,22 +68,37 @@ public class SchoolFacadeTest {
     private SignedUp su3;
     private SignedUp su4;
 
-    public SchoolFacadeTest() {
+    static HttpServer startServer() {
+        ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
+        return GrizzlyHttpServerFactory.createHttpServer(BASE_URI, rc);
+    }
+
+    public GenerelResourceTest() {
     }
 
     @BeforeAll
     public static void setUpClass() {
 
+        EMF_Creator.startREST_TestWithDB();
         emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.TEST, EMF_Creator.Strategy.DROP_AND_CREATE);
-        facade = SchoolFacade.getFacade(emf);
+
+        httpServer = startServer();
+        //Setup RestAssured
+        RestAssured.baseURI = SERVER_URL;
+        RestAssured.port = SERVER_PORT;
+        RestAssured.defaultParser = Parser.JSON;
     }
 
     @AfterAll
     public static void tearDownClass() {
+
+        EMF_Creator.endREST_TestWithDB();
+        httpServer.shutdownNow();
     }
 
     @BeforeEach
     public void setUp() {
+
         EntityManager em = emf.createEntityManager();
 
         c1 = new Course("Programming", "Fundamentel and object oriented programming");
@@ -129,75 +160,89 @@ public class SchoolFacadeTest {
         } finally {
             em.close();
         }
-
     }
 
     @AfterEach
     public void tearDown() {
+
+        // Remove any data after each test was run
     }
 
-    /**
-     * Test of getFacade method, of class SchoolFacade.
-     */
     @Test
-    public void testGetFacade() {
-        System.out.println("getFacade");
-
-        SchoolFacade expResult = facade;
-        SchoolFacade result = SchoolFacade.getFacade(emf);
-        assertEquals(expResult, result);
+    public void testServerIsUp() {
+        System.out.println("Testing is server UP");
+        given().when().get("/generel").then().statusCode(200);
     }
 
     /**
-     * Test of getCourseList method, of class SchoolFacade.
+     * Test of getCourseList method, of class GenerelResource.
      */
     @Test
     public void testGetCourseList() {
         System.out.println("getCourseList");
 
-        List<CourseDTO> courses = facade.getCourseList();
-        assertEquals(2, courses.size());
-        assertEquals("Programming", c1.getCourseName());
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/generel/courselist").then()
+                .statusCode(200)
+                .assertThat()
+                .body("description", hasSize(2), "courseName", hasItems("Programming", "System Development"));
 
     }
 
     /**
-     * Test of getClassListByTeacher method, of class SchoolFacade.
+     * Test of getClassListByTeacher method, of class GenerelResource.
      */
     @Test
     public void testGetClassListByTeacher() {
         System.out.println("getClassListByTeacher");
 
-        List<SchoolClassDTO> schoolclasses = facade.getClassListByTeacher(t2.getName());
-        assertEquals(2, schoolclasses.size());
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/generel/teacher/" + t1.getName()).then()
+                .statusCode(200)
+                .assertThat()
+                .body("courseName", hasSize(1), "courseName", hasItems("Programming"), "semester", hasItems("fall2018"));
 
     }
 
     /**
-     * Test of getSignedUpClassesByStudent method, of class SchoolFacade.
+     * Test of getClassAndCourseForStudents method, of class GenerelResource.
      */
     @Test
-    public void testGetSignedUpClassesByStudent() {
-        System.out.println("getSignedUpClassesByStudent");
+    public void testGetClassAndCourseForStudents() {
+        System.out.println("getClassAndCourseForStudents");
 
-        List<SchoolClassDTO> schoolclasses = facade.getSignedUpClassesByStudent(s1.getName());
-        assertEquals(2, schoolclasses.size());
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/generel/student/class/" + s1.getName()).then()
+                .statusCode(200)
+                .assertThat()
+                .body("courseName", hasSize(2), "courseName", hasItems("Programming", "System Development"), "teachers", hasSize(2));
 
     }
-    
-     /**
-     * Test of getSignedUpClassesByStudent method, of class SchoolFacade.
+
+    /**
+     * Test of getStudent method, of class GenerelResource.
      */
     @Test
     public void testGetStudent() {
         System.out.println("getStudent");
+        
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/generel/student/" + s2.getName()).then()
+                .statusCode(200)
+                .assertThat()
+                .body("email", hasItems("amalie@gmail.com"), "signedup", hasSize(1), "signedup.passedDate", hasSize(1));
 
-        List<StudentDTO> students = facade.getStudent(s1.getName());
-        assertEquals("benja@gmail.com", students.get(0).getEmail());
-        assertEquals(2, students.get(0).getSignedup().size());
-        assertEquals(1, students.size());
+        
     }
-    
-    
+
+ 
 
 }

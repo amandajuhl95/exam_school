@@ -51,7 +51,7 @@ public class StudentDTO implements Serializable {
         return email;
     }
 
-    public Set<SignedUpDTO> getSigneduplist() {
+    public Set<SignedUpDTO> getSignedup() {
         return signeduplist;
     }
 

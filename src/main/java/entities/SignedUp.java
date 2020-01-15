@@ -29,17 +29,17 @@ public class SignedUp implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
-    private int grade;
+    private String grade;
     private String passedDate;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private SchoolClass schoolclass;
 
-    public SignedUp() {
-    }
-
-    public SignedUp(int grade, String passedDate) {
+    public SignedUp(String grade, String passedDate) {
         this.grade = grade;
         this.passedDate = passedDate;
+    }
+
+    public SignedUp() {
     }
 
     public Long getId() {
@@ -50,11 +50,11 @@ public class SignedUp implements Serializable {
         this.id = id;
     }
 
-    public int getGrade() {
+    public String getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(String grade) {
         this.grade = grade;
     }
 
@@ -76,9 +76,9 @@ public class SignedUp implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + this.grade;
-        hash = 97 * hash + Objects.hashCode(this.passedDate);
+        int hash = 5;
+        hash = 47 * hash + Objects.hashCode(this.grade);
+        hash = 47 * hash + Objects.hashCode(this.passedDate);
         return hash;
     }
 
@@ -94,7 +94,7 @@ public class SignedUp implements Serializable {
             return false;
         }
         final SignedUp other = (SignedUp) obj;
-        if (this.grade != other.grade) {
+        if (!Objects.equals(this.grade, other.grade)) {
             return false;
         }
         if (!Objects.equals(this.passedDate, other.passedDate)) {

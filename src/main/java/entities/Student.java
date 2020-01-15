@@ -73,7 +73,7 @@ public class Student implements Serializable {
         return signeduplist;
     }
     
-     public void addSignedUp(SignedUp signedup) {
+    public void addSignedUp(SignedUp signedup) {
         this.signeduplist.add(signedup);
     }
 
