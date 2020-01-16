@@ -5,9 +5,6 @@
  */
 package rest;
 
-import DTO.CourseDTO;
-import DTO.SchoolClassDTO;
-import DTO.StudentDTO;
 import entities.Course;
 import entities.SchoolClass;
 import entities.SignedUp;
@@ -17,14 +14,12 @@ import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.parsing.Parser;
 import java.net.URI;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import org.junit.jupiter.api.AfterEach;
@@ -32,8 +27,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import static org.junit.Assert.*;
-import static rest.QuoteResourceTest.startServer;
 import utils.EMF_Creator;
 
 /**
@@ -115,7 +108,7 @@ public class GenerelResourceTest {
         s2 = new Student("Amalie", "amalie@gmail.com");
         s3 = new Student("Amanda", "amanda@gmail.com");
 
-        su1 = new SignedUp();
+        su1 = new SignedUp("null", "null");
         su2 = new SignedUp("12", "2019-06-20");
         su3 = new SignedUp("7", "2018-12-15");
         su4 = new SignedUp("10", "2020-01-19");

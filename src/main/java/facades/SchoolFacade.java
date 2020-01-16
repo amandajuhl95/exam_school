@@ -14,6 +14,8 @@ import entities.SchoolClass;
 import entities.SignedUp;
 import entities.Student;
 import entities.Teacher;
+import errorhandling.NotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -64,7 +66,7 @@ public class SchoolFacade {
         }
 
         return coursesDTO;
-
+         
     }
 
     public List<SchoolClassDTO> getClassListByTeacher(String teacher_name) {
@@ -140,7 +142,7 @@ public class SchoolFacade {
         Student s2 = new Student("Amalie", "amalie@gmail.com");
         Student s3 = new Student("Amanda", "amanda@gmail.com");
 
-        SignedUp su1 = new SignedUp(null, null);
+        SignedUp su1 = new SignedUp("null", "null");
         SignedUp su2 = new SignedUp("12", "2019-06-20");
         SignedUp su3 = new SignedUp("7", "2018-12-15");
         SignedUp su4 = new SignedUp("10", "2020-01-19");

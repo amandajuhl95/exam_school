@@ -84,7 +84,7 @@ public class SchoolFacadeTest {
         s2 = new Student("Amalie", "amalie@gmail.com");
         s3 = new Student("Amanda", "amanda@gmail.com");
 
-        su1 = new SignedUp();
+        su1 = new SignedUp("null", "null");
         su2 = new SignedUp("12", "2019-06-20");
         su3 = new SignedUp("7", "2018-12-15");
         su4 = new SignedUp("10", "2020-01-19");
