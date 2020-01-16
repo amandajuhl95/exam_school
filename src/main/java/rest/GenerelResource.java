@@ -91,7 +91,7 @@ public class GenerelResource {
     @Path("/populate")
     @Produces(MediaType.APPLICATION_JSON)
     public String populateDB() {
-        SF.populateDB();
+        //SF.populateDB();
         return "{\"msg\":\"Your database how been populated\"}";
     }
 
