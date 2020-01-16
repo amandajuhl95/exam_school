@@ -130,43 +130,62 @@ public class SchoolFacade {
 
         Course c1 = new Course("Programming", "Fundamentel and object oriented programming");
         Course c2 = new Course("System Development", "Analyse, design and knowledge about IT-tools");
+        Course c3 = new Course("Technology", "How to use databases");
+        Course c4 = new Course("Company Strategy", "Fundamental knowledge about IT- and business concepts");
 
         SchoolClass sc1 = new SchoolClass("fall2018", 30, c1);
-        SchoolClass sc2 = new SchoolClass("summer2019", 20, c1);
-        SchoolClass sc3 = new SchoolClass("fall2019", 20, c2);
+        SchoolClass sc2 = new SchoolClass("summer2019", 30, c1);
+        SchoolClass sc3 = new SchoolClass("fall2019", 30, c2);
+        SchoolClass sc4 = new SchoolClass("summer2020", 30, c3);
+        SchoolClass sc5 = new SchoolClass("fall 2020", 30, c4);
 
         Teacher t1 = new Teacher("Tine");
         Teacher t2 = new Teacher("Tue");
+        Teacher t3 = new Teacher("Palle");
+        Teacher t4 = new Teacher("Lars");
 
         Student s1 = new Student("Benjamin", "benja@gmail.com");
         Student s2 = new Student("Amalie", "amalie@gmail.com");
         Student s3 = new Student("Amanda", "amanda@gmail.com");
+        Student s4 = new Student("Laura", "laura@gmail.com");
+        Student s5 = new Student("Jonas", "jonas@gmail.com");
 
         SignedUp su1 = new SignedUp("null", "null");
         SignedUp su2 = new SignedUp("12", "2019-06-20");
         SignedUp su3 = new SignedUp("7", "2018-12-15");
         SignedUp su4 = new SignedUp("10", "2020-01-19");
+        SignedUp su5 = new SignedUp("02", "2018-12-14");
 
         sc1.addTeacher(t1);
         sc2.addTeacher(t2);
         sc3.addTeacher(t2);
+        sc4.addTeacher(t3);
+        sc5.addTeacher(t4);
 
         c1.addSchoolClass(sc1);
         c2.addSchoolClass(sc1);
         c1.addSchoolClass(sc2);
         c2.addSchoolClass(sc3);
+        c3.addSchoolClass(sc4);
+        c4.addSchoolClass(sc5);
+        c3.addSchoolClass(sc1);
+        c4.addSchoolClass(sc5);
 
         s1.addSignedUp(su1);
         s1.addSignedUp(su2);
         s2.addSignedUp(su4);
         s3.addSignedUp(su3);
         s3.addSignedUp(su2);
+        s4.addSignedUp(su5);
+        s5.addSignedUp(su3);
 
         su1.setSchoolclass(sc3);
         su2.setSchoolclass(sc1);
         su3.setSchoolclass(sc1);
         su4.setSchoolclass(sc3);
         su2.setSchoolclass(sc2);
+        su5.setSchoolclass(sc5);
+        su1.setSchoolclass(sc4);
 
         try {
 
@@ -181,6 +200,8 @@ public class SchoolFacade {
             em.persist(s1);
             em.persist(s2);
             em.persist(s3);
+            em.persist(s4);
+            em.persist(s5);
 
             em.getTransaction().commit();
 
